@@ -1,0 +1,6 @@
+pandas
+numpy
+tensorflow
+matplotlib
+cv2
+face_recognition
