@@ -1,10 +1,10 @@
-Face Movement Tracker
+# Face Movement Tracker
 
-Overview
+## Overview
 
 Face Movement Tracker is a Python-based project that monitors the duration a person spends in front of a camera by tracking their face movements. This can be used for various applications such as productivity tracking, screen time analysis, or security monitoring.
 
-Features
+## Features
 
 Real-time face detection using OpenCV and dlib/MediaPipe.
 
@@ -14,7 +14,7 @@ Logs entry and exit timestamps.
 
 Optional data visualization for monitoring trends.
 
-Technologies Used
+## Technologies Used
 
 Python
 
@@ -26,18 +26,18 @@ NumPy (for data processing)
 
 Matplotlib (for data visualization)
 
-Installation
+## Installation
 
-Clone the repository:
+### Clone the repository:
 
 git clone https://github.com/belepod/FaceTime-Tracker
 cd face-movement-tracker
 
-Install dependencies:
+### Install dependencies:
 
 pip install -r requirements.txt
 
-Usage
+### Usage
 
 Run the script:
 
@@ -48,7 +48,7 @@ The script will start tracking and logging the duration for which a face is dete
 
 Press q to stop tracking and view the results.
 
-Configuration
+## Configuration
 
 You can adjust parameters like face detection sensitivity and logging frequency in main.py.
 
@@ -60,6 +60,6 @@ Improve accuracy using deep learning models.
 
 Web-based dashboard for visualization.
 
-License
+## License
 
 This project is licensed under the MIT License.
