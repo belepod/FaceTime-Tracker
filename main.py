@@ -4,11 +4,29 @@ import face_recognition
 import os
 import datetime
 
-path = '/home/siddharth/Downloads/mlpbl/peh/img'
+# Use relative path to img directory in the project root
+path = os.path.join(os.path.dirname(__file__), 'img')
+
+# Create img directory if it doesn't exist
+if not os.path.exists(path):
+    os.makedirs(path)
+    print(f"Created directory: {path}")
+    print("Please add face images to the 'img' directory and run the script again.")
+    exit(0)
+
 images = []
 classNames = []
 myList = os.listdir(path)
-print(myList)
+
+# Filter out non-image files
+myList = [f for f in myList if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
+
+if not myList:
+    print(f"No image files found in {path}")
+    print("Please add face images (PNG, JPG, etc.) to the 'img' directory and run the script again.")
+    exit(0)
+
+print(f"Found images: {myList}")
 
 for cl in myList:
     curImg = cv2.imread(f'{path}/{cl}')
@@ -27,12 +45,13 @@ def findEncodings(images):
             encodeList.append(encodings[0])
     return encodeList
 
-siddharth_image_path = next((f'{path}/{cl}' for cl in myList if cl.startswith('Siddharth')), None)
-if siddharth_image_path:
-    siddharth_img = cv2.imread(siddharth_image_path)
-    encodeListKnown = findEncodings([siddharth_img])
-else:
-    raise FileNotFoundError("Siddharth's image not found in the specified directory.")
+# Encode all known faces
+encodeListKnown = findEncodings(images)
+
+if not encodeListKnown:
+    print("Error: No faces could be encoded from the provided images.")
+    print("Please ensure the images contain clear, visible faces.")
+    exit(1)
 
 print('Encoding Complete')
 
@@ -90,10 +109,13 @@ while True:
 
     for encodeFace, faceLoc in zip(encodesCurFrame, facesCurFrame):
         matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
+        faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
         name = "UNKNOWN"
 
         if True in matches:
-            name = "SIDDHARTH"
+            matchIndex = faceDis.argmin()
+            if matches[matchIndex]:
+                name = classNames[matchIndex].upper()
 
         detected_names.append(name)
 
