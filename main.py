@@ -29,7 +29,7 @@ if not myList:
 print(f"Found images: {myList}")
 
 for cl in myList:
-    curImg = cv2.imread(f'{path}/{cl}')
+    curImg = cv2.imread(os.path.join(path, cl))
     if curImg is not None:
         images.append(curImg)
         classNames.append(os.path.splitext(cl)[0])
@@ -38,20 +38,25 @@ print(classNames)
 
 def findEncodings(images):
     encodeList = []
-    for img in images:
+    validIndices = []
+    for idx, img in enumerate(images):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         encodings = face_recognition.face_encodings(img)
         if encodings:
             encodeList.append(encodings[0])
-    return encodeList
+            validIndices.append(idx)
+    return encodeList, validIndices
 
 # Encode all known faces
-encodeListKnown = findEncodings(images)
+encodeListKnown, validIndices = findEncodings(images)
 
 if not encodeListKnown:
     print("Error: No faces could be encoded from the provided images.")
     print("Please ensure the images contain clear, visible faces.")
     exit(1)
+
+# Keep only classNames for images that were successfully encoded
+classNames = [classNames[i] for i in validIndices]
 
 print('Encoding Complete')
 
